@@ -2,16 +2,15 @@
 
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
-
+use App\Http\Controllers\UserAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::get('signup',[UserAuthController::class,'signup']);
 
 Route::get('list',[AuthorController::class,'list']);
+
+Route::group(['middleware'=>"auth:sanctum"],function(){
 
 Route::post('addAuthor',[AuthorController::class,'addAuthor']);
 
@@ -30,3 +29,7 @@ Route::get('viewBook/{book_name}',[BookController::class,'viewBook']);
 Route::put('updateBook/{id}',[BookController::class,'updateBook']);
 
 Route::delete('deleteBook/{id}',[BookController::class,'deleteBook']);
+
+});
+
+Route::get('login',[UserAuthController::class,'login'])->name('login');
